@@ -18,7 +18,7 @@ from spatx_core.data.data import TrainingData, PredictionData
 from spatx_core.datasets.vit_to_gene import ViTTrainingDataset, ViTPredictionDataset
 from spatx_core.models.vit_to_gene import ViTGenePredictor, create_vit_gene_model
 from spatx_core.models.vit_to_gene._loss import CombinedLoss as ViTCombinedLoss
-from spatx_core.data_adapters.breast_data_adapters import BreastTrainingDataAdapter, BreastPredictionDataAdapter
+from spatx_core.data_adapters.hest_data_adapter import HestTrainingDataAdapter, HestPredictionDataAdapter
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -67,10 +67,9 @@ def train_vit_model():
     from torch.utils.data import DataLoader
     import torch.optim as optim
     
-    # Data configuration
-    data_dir = Path("data")
-    breast_csv = data_dir / "breast.csv"
-    image_dir = data_dir / "20x"
+    # Data configuration - using distributed HEST data structure
+    # Each WSI has its own folder: hest_data_new/{wsi_id}/{wsi_id}_patch_data.csv and hest_data_new/{wsi_id}/20x/
+    hest_data_dir = Path("hest_data_new")
     
     # Training hyperparameters
     num_epochs = 10
@@ -82,18 +81,17 @@ def train_vit_model():
     
     # Gene IDs to predict (example - adjust as needed)
     
-    # Create data adapters - following CIT pattern
-    train_adapter = BreastTrainingDataAdapter(
-        breast_csv=str(breast_csv),
-        image_dir=str(image_dir),
-        wsi_ids=["TENX99", "TENX95", "NCBI785", "NCBI784"],  # Training WSIs
+    # Create data adapters - using HestTrainingDataAdapter for distributed data
+    # wsi_ids can be None to auto-discover all available WSI folders
+    train_adapter = HestTrainingDataAdapter(
+        base_dir=str(hest_data_dir),
+        wsi_ids=["NCBI856"],  # Training WSIs - specify folders in hest_data_new/
         gene_ids=gene_ids,
     )
     
-    validation_adapter = BreastTrainingDataAdapter(
-        breast_csv=str(breast_csv),
-        image_dir=str(image_dir),
-        wsi_ids=["NCBI783"],  # Validation WSIs (ideally use different WSIs)
+    validation_adapter = HestTrainingDataAdapter(
+        base_dir=str(hest_data_dir),
+        wsi_ids=["NCBI857"],  # Validation WSIs (ideally use different WSIs)
         gene_ids=gene_ids,
     )
     
@@ -253,10 +251,8 @@ def predict_with_vit_model():
     """
     from torch.utils.data import DataLoader
     
-    # Configuration
-    data_dir = Path("data")
-    breast_csv = data_dir / "breast.csv"
-    image_dir = data_dir / "20x"
+    # Configuration - using distributed HEST data structure
+    hest_data_dir = Path("hest_data_new")
     model_path = "saved_models/vit_to_gene/experiment_1/best_model.pth"
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     batch_size = 8
@@ -269,11 +265,11 @@ def predict_with_vit_model():
         logger.error(f"Model not found at {model_path}. Train a model first.")
         return None
     
-    # Create prediction adapter
-    prediction_adapter = BreastPredictionDataAdapter(
-        prediction_csv=str(breast_csv),
-        image_dir=str(image_dir),
-        wsi_ids=["TENX99"],
+    # Create prediction adapter - using HestPredictionDataAdapter for distributed data
+    # wsi_ids can be None to auto-discover all available WSI folders
+    prediction_adapter = HestPredictionDataAdapter(
+        base_dir=str(hest_data_dir),
+        wsi_ids=["NCBI856"],  # Specify WSI folders to predict on
     )
     
     if len(prediction_adapter) == 0:

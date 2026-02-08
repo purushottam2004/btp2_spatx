@@ -8,11 +8,17 @@ from .breast_data_adapters import (
     BreastTrainingDataAdapter, BreastPredictionDataAdapter,
 )
 
+from .hest_data_adapter import (
+    HestTrainingDataAdapter, HestPredictionDataAdapter,
+)
+
 from .base_data_adapter import BaseTrainingDataAdapter, BasePredictionDataAdapter
 
 __all__ = [
     'BreastTrainingDataAdapter',
     'BreastPredictionDataAdapter',
+    'HestTrainingDataAdapter',
+    'HestPredictionDataAdapter',
     'BaseTrainingDataAdapter',
     'BasePredictionDataAdapter',
 ]
