@@ -24,12 +24,81 @@ from spatx_core.data_adapters.hest_data_adapter import HestTrainingDataAdapter, 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+#following ids are for brest dataset
+# gene_ids = [
+#         'ABCC11', 'ADH1B', 'ADIPOQ', 'ANKRD30A', 'AQP1', 'AQP3', 'CCR7', 'CD3E', 'CEACAM6', 'CEACAM8',
+#         'CLIC6', 'CYTIP', 'DST', 'ERBB2', 'ESR1', 'FASN', 'GATA3', 'IL2RG', 'IL7R', 'KIT', 'KLF5', 
+#         'KRT14', 'KRT5', 'KRT6B', 'MMP1', 'MMP12', 'MS4A1', 'MUC6', 'MYBPC1', 'MYH11', 'MYLK', 
+#         'OPRPN', 'OXTR', 'PIGR', 'PTGDS', 'PTN', 'PTPRC', 'SCD', 'SCGB2A1', 'SERHL2', 'SERPINA3', 
+#         'SFRP1', 'SLAMF7', 'TACSTD2', 'TCL1A', 'TENT5C', 'TOP2A', 'TPSAB1', 'TRAC', 'VWF'
+#     ]
+
+#following ids are for lung dataset
 gene_ids = [
-        'ABCC11', 'ADH1B', 'ADIPOQ', 'ANKRD30A', 'AQP1', 'AQP3', 'CCR7', 'CD3E', 'CEACAM6', 'CEACAM8',
-        'CLIC6', 'CYTIP', 'DST', 'ERBB2', 'ESR1', 'FASN', 'GATA3', 'IL2RG', 'IL7R', 'KIT', 'KLF5', 
-        'KRT14', 'KRT5', 'KRT6B', 'MMP1', 'MMP12', 'MS4A1', 'MUC6', 'MYBPC1', 'MYH11', 'MYLK', 
-        'OPRPN', 'OXTR', 'PIGR', 'PTGDS', 'PTN', 'PTPRC', 'SCD', 'SCGB2A1', 'SERHL2', 'SERPINA3', 
-        'SFRP1', 'SLAMF7', 'TACSTD2', 'TCL1A', 'TENT5C', 'TOP2A', 'TPSAB1', 'TRAC', 'VWF'
+    "S100A2","PTGDS","CD86","EGFR","SCGB3A2","CCL18","BAX","UCHL3","XBP1",
+    "RHOA","HLA-DRA","PTPRC","COL1A1","SNAI1","FN1","HIF1A","VIM","GZMA",
+    "LAMP3","RNASE1","CEACAM6","IL1B","SEC11C","CCN2","CDK1","SFTPC",
+    "PDIA4","HSPA5","PDIA6","MS4A7","PLIN2","FGF2","FGFBP2","LYZ",
+    "SPARCL1","ICAM1","ATF4","EPCAM","MGST1","DCN","ASCL1","SCGB1A1",
+    "CD44","CD68","ATF3","HAS2","CD1A","BPIFA1","CD14","GCLM","PDIA3",
+    "HERPUD1","EHMT1","UBE2J1","COL1A2","IDH1","ERLEC1","HYOU1","SPCS3",
+    "SPCS2","COL3A1","HMGA1","CCL2","IRF7","IRF1","NUCB2","ITGAV",
+    "S100A12","COL4A3","HMOX1","AKR1C1","SSR3","KRT18","MCEMP1","KLRG1",
+    "BCL2L1","EPAS1","KLRC1","FABP4","ITGB1","MAL","PRDX4","AXIN2",
+    "CTNNB1","SPP1","VEGFA","PKM","HIST1H1C","KRT15","STAT1","ITGAM",
+    "PCNA","FCER1G","KRT8","CCR7","MYC","ANKRD28","AGER","SFTPD",
+    "NHSL2","MRC1","SOD2","ATF6","DNAJB9","ACTA2","FCN1","FAS",
+    "PECAM1","AIF1","CCL21","CD34","CD52","PPARG","SMAD4","ATG7",
+    "NAPSA","TGFB1","WFDC2","BMP4","SFTA2","NKX2-1","CD8A","PDGFRB",
+    "HAVCR2","WWTR1","LUM","MARCO","AGR3","HES1","UQCRHL","SOX2",
+    "DEFB1","PGC","LMAN1","TP73","WNT3A","RETN","CD27","YAP1","CST3",
+    "KRT17","SLC25A4","LGALS1","SPRY2","SELENOS","MYDGF","POSTN",
+    "DUOX1","S100A8","CRELD2","ITM2C","BANK1","NUTF2","ITGA3","PLPP5",
+    "TOP1","ITGB6","STAT6","CHAC1","BMPR2","TGFB3","WNT7B","NFKB1",
+    "HLA-DQB1","CEACAM5","FGF7","LPAR1","SCG2","RTKN2","MANF","GSR",
+    "ZEB1","SOX4","C1QC","IL32","DDIT3","SFRP2","GZMB","SFRP4","PIM2",
+    "S100A9","GKN2","TGFB2","DMBT1","SLC25A37","IL4R","IFIT2","PDGFRA",
+    "KDR","MUC5B","TRAC","GDF15","HLA-DQA1","CD4","WNT2","IFIT3",
+    "ISG20","CTHRC1","DCTPP1","GPR183","LTF","KIT","TTC19","GNG11",
+    "FCGR3A","WNT5A","BCL2","MMP7","MSLN","IFIT1","COL15A1","IL7R",
+    "TBXA2R","AXL","FOXI1","CD247","OAS2","GLP1R","CXCR4","CXCL9",
+    "ITGAX","CLDN5","FAP","TPSAB1","UGDH","TNFRSF13C","FGF10","MEG3",
+    "LEF1","CTLA4","KRT6A","CA4","FCER1A","KRT5","FOXJ1","CSPG4",
+    "RAMP2","OAS3","HAS1","FCN3","BCL2L11","ATP2A3","KLRB1","CD69",
+    "CD274","APLN","CDKN2A","ACKR1","CPA3","CD1C","JCHAIN","SNAI2",
+    "AKR1C2","NOX4","TREM2","IFNG","SNCA","SPINK1","CCNB2","RSPO3",
+    "CFTR","CCNA1","SLC1A3","CD8B","AKR1B10","CDH26","LPAR2","LGR5",
+    "EREG","FKBP11","SAA2","SLC2A1","RACGAP1","UBE2S","CALCA","CD2",
+    "CD3G","MS4A1","KRT14","LAG3","GNLY","CHGB","PAEP","S100A7",
+    "SOX9","IL1A","LTB","CREB3L4","IL37","ITGAE","ELN","MKI67",
+    "PLVAP","HEY1","TP63","LGR6","CD79B","CD28","IL2RA","CCL5",
+    "CD79A","CD3E","CXCL13","TNFRSF17","CD19","CCL22","TOP2A",
+    "NKG7","WT1","TNFRSF9","CXCL14","APLNR","TERT","CENPF","MMP12",
+    "CXCR5","IL11","CD3D","GZMK","SLC7A11","MMP10","LCK","ABCC2",
+    "IGLL1","MUC5AC","LILRA4","ELANE","DIRAS3","PI16","FASLG",
+    "ERN2","MFAP5","PDCD1","TCL1A","CGA","TNF","LY6D","FOXP3",
+    "VPREB3"
+]
+
+lung_wsi_ids = [
+        "NCBI856",
+        "NCBI858",
+        "NCBI860",
+        "NCBI866",
+        "NCBI870",
+        "NCBI875",
+        "NCBI879",
+        "NCBI881",
+        "NCBI883",
+        "NCBI857",
+        "NCBI859",
+        "NCBI861",
+        "NCBI867",
+        "NCBI873",
+        "NCBI876",
+        "NCBI880",
+        "NCBI882",
+        "NCBI884"
     ]
 
 def calculate_pearson_scores(predictions: np.ndarray, targets: np.ndarray) -> tuple:
@@ -85,13 +154,12 @@ def train_vit_model():
     # wsi_ids can be None to auto-discover all available WSI folders
     train_adapter = HestTrainingDataAdapter(
         base_dir=str(hest_data_dir),
-        wsi_ids=["NCBI856"],  # Training WSIs - specify folders in hest_data_new/
+        wsi_ids=lung_wsi_ids,  # Training WSIs - specify folders in hest_data_new/
         gene_ids=gene_ids,
     )
-    
     validation_adapter = HestTrainingDataAdapter(
         base_dir=str(hest_data_dir),
-        wsi_ids=["NCBI857"],  # Validation WSIs (ideally use different WSIs)
+        wsi_ids=lung_wsi_ids,  # Validation WSIs (ideally use different WSIs)
         gene_ids=gene_ids,
     )
     
@@ -269,7 +337,7 @@ def predict_with_vit_model():
     # wsi_ids can be None to auto-discover all available WSI folders
     prediction_adapter = HestPredictionDataAdapter(
         base_dir=str(hest_data_dir),
-        wsi_ids=["NCBI856"],  # Specify WSI folders to predict on
+        wsi_ids=lung_wsi_ids,  # Specify WSI folders to predict on
     )
     
     if len(prediction_adapter) == 0:
