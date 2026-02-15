@@ -4,6 +4,8 @@ Module containing error message templates for consistent error reporting.
 This module provides standardized error messages used throughout the application
 to ensure consistency in error reporting and make message maintenance easier.
 """
+from __future__ import annotations
+
 
 class ErrorMessage:
     """

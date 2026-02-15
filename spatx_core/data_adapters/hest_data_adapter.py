@@ -432,7 +432,9 @@ class HestTrainingDataAdapter(BaseTrainingDataAdapter):
         metadata_cols = ['barcode', 'id', 'x_pixel', 'y_pixel']
         if 'combined_text' in self.df.columns:
             metadata_cols.append('combined_text')
-        
+        if self.df.columns.str.contains('x-pixel').any() and self.df.columns.str.contains('y-pixel').any():
+            self.df["x_pixel"] = self.df["x-pixel"]
+            self.df["y_pixel"] = self.df["y-pixel"]
         self.df = self.df[metadata_cols + self.gene_ids]
         self.gene_cols = [col for col in self.df.columns if col not in metadata_cols]
 
